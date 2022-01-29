@@ -1,32 +1,38 @@
 using System;
 using System.Linq;
+using UniRx;
 using UnityEngine;
 using Random = System.Random;
 
 public class PhrasesRepository : MonoBehaviourWithGameManager
 {
-    [SerializeField]
-    private PhraseScriptable[] actualPhrases;
+    [SerializeField] private PhraseScriptable[] actualPhrases;
 
     private bool[] _inUseArray;
 
-    private readonly Random rnd = new ();
+    private readonly Random rnd = new();
 
     private void Start()
     {
         _inUseArray = Enumerable.Repeat(false, actualPhrases.Length).ToArray();
+
+        Observable.Interval(TimeSpan.FromMilliseconds(1000)).Subscribe((_) =>
+        {
+            gameManager.OnPhraseReachMouth.OnNext(GetPhrase());
+        });
     }
 
     public PhraseScriptable GetPhrase()
     {
-        var chosen = _inUseArray.Select((inUse, i) => (inUse, i)).Where(b => !b.inUse).OrderBy(_ => rnd.Next())
-            .FirstOrDefault();
+        var notUsedPhrases = _inUseArray.Select((inUse, i) => (inUse, i)).Where(b => !b.inUse).ToArray();
 
-        if (chosen == default)
+        if (notUsedPhrases.Length == 0)
             return null;
 
-        _inUseArray[chosen.i] = true;
-        return actualPhrases[chosen.i];
+        var (_, chosenIndex) = notUsedPhrases.OrderBy(_ => rnd.Next()).First();
+
+        _inUseArray[chosenIndex] = true;
+        return actualPhrases[chosenIndex];
     }
 
 

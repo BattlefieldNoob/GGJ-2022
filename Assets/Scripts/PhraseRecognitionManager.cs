@@ -14,7 +14,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
     public ISubject<string> PartialValidPhrase = new Subject<string>();
     public ISubject<PhraseScriptable> WrongPhrase = new Subject<PhraseScriptable>();
 
-    private PhraseScriptable[] _actualPhrases;
+    private List<PhraseScriptable> _actualPhrases = new List<PhraseScriptable>();
 
     public string partialPhrase;
 

@@ -723,6 +723,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PhraseRecognitionManager: {fileID: 484812049}
   PhraseRepository: {fileID: 223954386}
+  MentalSanity: 100
+  MentalSanityLostMultiplier: 3
+  GoodBadIndicator: 0
+  GoodBadThreshold: 10
+  inGameplay: 0
 --- !u!4 &1836168894
 Transform:
   m_ObjectHideFlags: 0
