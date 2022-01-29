@@ -62,13 +62,15 @@ public class GameManager : MonoBehaviour
 
     public void PlayerLose()
     {
-        Debug.Log("PLAYER LOSE!!!!!!!!!!!!");
-        EnemiesManager.Annichilation();
         inGameplay = false;
+        Debug.Log("PLAYER LOSE!!!!!!!!!!!!");
+        PhraseRecognitionManager.StopListen();
+        EnemiesManager.Annichilation();
     }
 
     public void PlayerWin()
     {
+        inGameplay = false;
         Debug.Log("PLAYER WIN!!!!!!!!!!!!");
         if (GoodLevel >= GoodBadThreshold)
         {
@@ -77,8 +79,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("BAD ENDING !!!!!!!!!!!!");
         }
+        PhraseRecognitionManager.StopListen();
         EnemiesManager.Annichilation();
-        inGameplay = false;
+        
     }
 
 

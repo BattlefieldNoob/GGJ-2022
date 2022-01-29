@@ -20,6 +20,9 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
     public string partialPhrase;
     private List<PhraseScriptable> _valid;
 
+    private IDisposable anykeySubscription;
+    private IDisposable enterkeySubscription;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,7 +54,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
         _valid = new List<PhraseScriptable>();
         var blocked = new List<PhraseScriptable>();
 
-        anyKeyObservable.Where(_ => Input.GetKeyDown(KeyCode.Return)).Subscribe((_) =>
+        enterkeySubscription = anyKeyObservable.Where(_ => Input.GetKeyDown(KeyCode.Return)).Subscribe((_) =>
         {
             Debug.Log("ENTER!");
 
@@ -60,6 +63,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
             if (phrase != null)
             {
                 ValidPhrase.OnNext(phrase);
+                actualPhrases.Remove(phrase);
             }
 
             //if (partialPhrase.Length != 0)
@@ -83,7 +87,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
         });
 
 
-        KeyObservable.Subscribe((currentLetter) =>
+        anykeySubscription = KeyObservable.Subscribe((currentLetter) =>
         {
             if (currentLetter == "Space" && partialPhrase.Length != 0)
             {
@@ -145,18 +149,23 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
             {
                 currentIndex = 0;
                 blocked.Clear();
-                partialPhrase = "";
-                PartialValidPhrase.OnNext(partialPhrase);
+                //partialPhrase = "";
+                //PartialValidPhrase.OnNext(partialPhrase);
             }
-            else
-            {
-                partialPhrase += currentLetter.ToLower();
-                PartialValidPhrase.OnNext(partialPhrase);
-            }
+            
+            partialPhrase += currentLetter.ToLower();
+            PartialValidPhrase.OnNext(partialPhrase);
         });
 
         ValidPhrase.Subscribe((valid) => { Debug.Log($"VALID:{valid.Phrase}"); });
         WrongPhrase.Subscribe((wrong) => { Debug.Log($"NOT POSSIBLE:{wrong.Phrase}"); });
         PartialValidPhrase.Subscribe((s) => { Debug.Log($"Partial:{s}"); });
+    }
+
+
+    public void StopListen()
+    {
+        anykeySubscription?.Dispose();
+        enterkeySubscription?.Dispose();
     }
 }
