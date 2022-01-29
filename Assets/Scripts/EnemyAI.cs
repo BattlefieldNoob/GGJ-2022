@@ -35,4 +35,15 @@ public class EnemyAI : MonoBehaviour
             agent.velocity = Vector3.zero;
         }
     }
+    public void Die()
+    {
+        killed = true;
+        // animate;
+        Unspawn();
+    }
+
+    public void Unspawn()
+    {
+        Destroy(gameObject);
+    }
 }

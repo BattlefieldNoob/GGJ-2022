@@ -16,10 +16,10 @@ public class PhrasesRepository : MonoBehaviourWithGameManager
     {
         _inUseArray = Enumerable.Repeat(false, actualPhrases.Length).ToArray();
 
-        Observable.Interval(TimeSpan.FromMilliseconds(1000)).Subscribe((_) =>
-        {
-            gameManager.OnPhraseReachMouth.OnNext(GetPhrase());
-        });
+        // Observable.Interval(TimeSpan.FromMilliseconds(1000)).Subscribe((_) =>
+        // {
+        //     gameManager.OnPhraseReachMouth.OnNext(GetPhrase());
+        // });
     }
 
     public PhraseScriptable GetPhrase()

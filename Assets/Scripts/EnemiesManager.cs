@@ -26,7 +26,13 @@ public class EnemiesManager : MonoBehaviourWithGameManager
     // Start is called before the first frame update
     void Start()
     {
-        // enemies.Initialize();
+        gameManager.PhraseRecognitionManager.ValidPhrase.Subscribe((writtenPhrase) => {
+            EnemyAI findedEnemy =  enemies.Find((enemy) => {
+                return enemy.phrase == writtenPhrase;
+            });
+            RemoveEnemy(enemy);
+            findedEnemy.Die();
+        });
         Observable.Interval(TimeSpan.FromSeconds(spawnTime)).Subscribe((_) => {
             Spawn();
         });
@@ -38,9 +44,22 @@ public class EnemiesManager : MonoBehaviourWithGameManager
         Vector3 position = new Vector3(locationX, spawnOrigin.position.y, spawnOrigin.position.z);
         
         EnemyAI newEnemy = Instantiate(enemy, position, spawnOrigin.rotation);
-        // newEnemy.phrase = gameManager.PhraseRepository.GetPhrase();
-        newEnemy.phrase = testPhrase;
+        newEnemy.phrase = gameManager.PhraseRepository.GetPhrase();
+        // newEnemy.phrase = testPhrase;
         newEnemy.target = exit;
         enemies.Add(newEnemy);
+    }
+
+    private void RemoveEnemy(EnemyAI enemy)
+    {
+        gameManager.PhraseRepository.CompletedPhrase(enemy.phrase);
+        enemies.Remove(enemy);
+    }
+
+    public void Complete(EnemyAI enemy)
+    {
+        gameManager.OnPhraseReachMouth.OnNext(enemy.phrase);
+        RemoveEnemy(enemy);
+        enemy.Unspawn();
     }
 }
