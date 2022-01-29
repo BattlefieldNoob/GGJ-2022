@@ -4,7 +4,7 @@ using System.Linq;
 using UniRx;
 using UnityEngine;
 
-public class PhraseRecognitionManager : MonoBehaviour
+public class PhraseRecognitionManager : MonoBehaviourWithGameManager
 {
     private List<KeyCode> _keyCodes = new List<KeyCode>();
 
@@ -14,7 +14,7 @@ public class PhraseRecognitionManager : MonoBehaviour
     public ISubject<string> PartialValidPhrase = new Subject<string>();
     public ISubject<PhraseScriptable> WrongPhrase = new Subject<PhraseScriptable>();
 
-    public PhraseScriptable[] phrases;
+    private List<PhraseScriptable> _actualPhrases = new List<PhraseScriptable>();
 
     public string partialPhrase;
 
@@ -47,7 +47,7 @@ public class PhraseRecognitionManager : MonoBehaviour
 
         KeyObservable.Subscribe((currentLetter) =>
         {
-            foreach (var phraseScriptable in phrases)
+            foreach (var phraseScriptable in _actualPhrases)
             {
                 var phrase = phraseScriptable.Phrase.RemoveWhitespace().ToLower();
 
