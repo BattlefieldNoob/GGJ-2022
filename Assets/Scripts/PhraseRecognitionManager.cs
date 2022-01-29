@@ -35,7 +35,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
         // KeyObservable = Observable.Interval(TimeSpan.FromMilliseconds(250))
         //     .Select((l, i) => i < mytest.Length ? mytest[i].ToString() : "9");
 
-        // KeyObservable.Subscribe((letter) => { Debug.Log(letter); });
+        KeyObservable.Subscribe((letter) => { Debug.Log(letter); });
 
 
         // phrase recognition
