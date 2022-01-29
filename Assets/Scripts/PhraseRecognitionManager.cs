@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PhraseRecognitionManager : MonoBehaviourWithGameManager
@@ -22,20 +23,24 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
     void Start()
     {
         _keyCodes = Enumerable.Range(97, 26).Select(i => (KeyCode)i).ToList();
+        
+        _keyCodes.AddRange(Enumerable.Range(48, 10).Select(i => (KeyCode)i));
+        
+        _keyCodes.Add(KeyCode.Space);
 
         var anyKeyObservable = Observable.EveryUpdate()
             .Where(_ => Input.anyKeyDown);
 
         KeyObservable = anyKeyObservable.SelectMany(_ => _keyCodes)
             .Where(Input.GetKeyDown)
-            .Select(code => code.ToString());
+            .Select(code => code.ToString().Replace("Alpha",""));
 
         // var mytest = "ciao come stai ciaa ciao come stai".RemoveWhitespace();
         // 
         // KeyObservable = Observable.Interval(TimeSpan.FromMilliseconds(250))
         //     .Select((l, i) => i < mytest.Length ? mytest[i].ToString() : "9");
 
-        // KeyObservable.Subscribe((letter) => { Debug.Log(letter); });
+        KeyObservable.Subscribe((letter) => { Debug.Log(letter); });
 
 
         // phrase recognition
@@ -45,10 +50,34 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
         var valid = new List<PhraseScriptable>();
         var blocked = new List<PhraseScriptable>();
 
+
+        anyKeyObservable.Where(_ => Input.GetKeyDown(KeyCode.Return)).Subscribe((_) =>
+        {
+            currentIndex = 0;
+            blocked.Clear();
+            valid.Clear();
+            partialPhrase = "";
+        });
+        
+
         KeyObservable.Subscribe((currentLetter) =>
         {
+
+            if (currentLetter == "Space" && partialPhrase.Length != 0)
+            {
+                partialPhrase += " ";
+                PartialValidPhrase.OnNext(partialPhrase);
+                return;
+            }
+            
             foreach (var phraseScriptable in actualPhrases)
             {
+                if(phraseScriptable == null)
+                    continue;
+                
+                if(phraseScriptable.Phrase == null)
+                    continue;
+                
                 var phrase = phraseScriptable.Phrase.RemoveWhitespace().ToLower();
 
                 if (phrase.Length < currentIndex)
@@ -58,7 +87,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
                 }
                 else
                 {
-                    if (!blocked.Contains(phraseScriptable) && phrase[currentIndex] == currentLetter.ToLower().ToCharArray().FirstOrDefault())
+                    if (!blocked.Contains(phraseScriptable) && currentIndex < phrase.Length && phrase[currentIndex] == currentLetter.ToLower().ToCharArray().FirstOrDefault())
                     {
                         if (phrase.Length - 1 == currentIndex)
                         {
@@ -92,6 +121,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
                 currentIndex = 0;
                 blocked.Clear();
                 partialPhrase = "";
+                PartialValidPhrase.OnNext(partialPhrase);
             }
             else
             {
@@ -100,8 +130,8 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
             }
         });
 
-        ValidPhrase.Subscribe((valid) => { Debug.Log($"VALID!:{valid.Phrase}"); });
-        WrongPhrase.Subscribe((wrong) => { Debug.Log($"REMOVED:{wrong.Phrase}"); });
+        ValidPhrase.Subscribe((valid) => { Debug.Log($"VALID:{valid.Phrase}"); });
+        WrongPhrase.Subscribe((wrong) => { Debug.Log($"NOT POSSIBLE:{wrong.Phrase}"); });
         PartialValidPhrase.Subscribe((s) => { Debug.Log($"Partial:{s}"); });
     }
 }
