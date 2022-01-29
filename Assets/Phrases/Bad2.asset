@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6bda751968bd324cb3189cf6958e1a3, type: 3}
-  m_Name: Phrase16
+  m_Name: Bad2
   m_EditorClassIdentifier: 
-  Phrase: Like ur style
-  IsGood: 1
+  Phrase: U make onions cry
+  IsGood: 0
   Multiplier: 1
