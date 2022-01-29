@@ -18,6 +18,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
     public List<PhraseScriptable> actualPhrases = new List<PhraseScriptable>();
 
     public string partialPhrase;
+    private List<PhraseScriptable> _valid;
 
     // Start is called before the first frame update
     void Start()
@@ -47,28 +48,36 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
 
 
         int currentIndex = 0;
-        var valid = new List<PhraseScriptable>();
+        _valid = new List<PhraseScriptable>();
         var blocked = new List<PhraseScriptable>();
 
         anyKeyObservable.Where(_ => Input.GetKeyDown(KeyCode.Return)).Subscribe((_) =>
         {
             Debug.Log("ENTER!");
-            if (partialPhrase.Length != 0)
-            {
-                var found = actualPhrases.Where(scriptable => scriptable != null && scriptable.Phrase != null)
-                    .Select((p, i) => (p.Phrase.RemoveWhitespace().ToLower(), i))
-                    .FirstOrDefault(phrase => phrase.Item1 == partialPhrase.RemoveWhitespace());
 
-                Debug.Log(found);
-                if (found != default)
-                {
-                    ValidPhrase.OnNext(actualPhrases[found.i]);
-                }
+            var phrase = _valid.FirstOrDefault((p) =>
+                p.Phrase.RemoveWhitespace().ToLower() == partialPhrase.RemoveWhitespace());
+            if (phrase != null)
+            {
+                ValidPhrase.OnNext(phrase);
             }
+
+            //if (partialPhrase.Length != 0)
+            //{
+            //    var found = actualPhrases.Where(scriptable => scriptable != null && scriptable.Phrase != null)
+            //        .Select((p, i) => (p.Phrase.RemoveWhitespace().ToLower(), i))
+            //        .FirstOrDefault(phrase => phrase.Item1 == partialPhrase.RemoveWhitespace());
+//
+            //    Debug.Log(found);
+            //    if (found != default)
+            //    {
+            //        ValidPhrase.OnNext(actualPhrases[found.i]);
+            //    }
+            //}
 
             currentIndex = 0;
             blocked.Clear();
-            valid.Clear();
+            _valid.Clear();
             partialPhrase = "";
             PartialValidPhrase.OnNext(partialPhrase);
         });
@@ -97,8 +106,8 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
 
                 if (phrase.Length < currentIndex)
                 {
-                    if (!valid.Contains(phraseScriptable))
-                        valid.Add(phraseScriptable);
+                    if (!_valid.Contains(phraseScriptable))
+                        _valid.Add(phraseScriptable);
                 }
                 else
                 {
@@ -115,14 +124,14 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
                         //    break;
                         //}
 
-                        if (!valid.Contains(phraseScriptable))
-                            valid.Add(phraseScriptable);
+                        if (!_valid.Contains(phraseScriptable))
+                            _valid.Add(phraseScriptable);
                     }
                     else
                     {
-                        if (valid.Contains(phraseScriptable))
+                        if (_valid.Contains(phraseScriptable))
                         {
-                            valid.Remove(phraseScriptable);
+                            _valid.Remove(phraseScriptable);
                             WrongPhrase.OnNext(phraseScriptable);
                             blocked.Add(phraseScriptable);
                         }
@@ -132,7 +141,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
 
             currentIndex++;
 
-            if (valid.Count == 0)
+            if (_valid.Count == 0)
             {
                 currentIndex = 0;
                 blocked.Clear();
