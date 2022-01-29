@@ -325,6 +325,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1956150753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1956150754}
+  m_Layer: 0
+  m_Name: spawnOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1956150754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956150753}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -16.36, y: -4.42, z: -11.61}
+  m_LocalScale: {x: 3.1302, y: 3.1302, z: 3.1302}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4083913605796115728}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5200023099519242051
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +390,7 @@ Transform:
   - {fileID: 1318590373}
   - {fileID: 809130584}
   - {fileID: 889684412}
+  - {fileID: 1956150754}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -458,6 +490,7 @@ GameObject:
   - component: {fileID: 8501776129059405771}
   - component: {fileID: 8501776129059405769}
   - component: {fileID: 8501776129059405770}
+  - component: {fileID: 1765975515}
   m_Layer: 0
   m_Name: Gameplaycamera
   m_TagString: MainCamera
@@ -564,3 +597,22 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1765975515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8501776129059405768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797ead3edcdc251478cb089b0cd00a9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies: []
+  enemy: {fileID: 3545472915982792053, guid: e57e1f082f3a48b459fa8d4cc7d9094b, type: 3}
+  spawnTime: 2
+  spawnOrigin: {fileID: 1956150754}
+  range: 50
+  exit: {fileID: 809130584}
+  testPhrase: {fileID: 11400000, guid: 41a10c2309a17a948bb5d894dcb5d1ac, type: 2}

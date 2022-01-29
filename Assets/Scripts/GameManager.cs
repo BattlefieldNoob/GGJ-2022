@@ -1,7 +1,6 @@
 using System;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -25,11 +24,11 @@ public class GameManager : MonoBehaviour
         StartGameplay();
 
         OnPhraseReachMouth.Subscribe((phrase) => { GoodBadIndicator += phrase.Multiplier * (phrase.IsGood ? 1 : -1); });
-        OnPhraseReachMouth.Subscribe((phrase) =>
-        {
-            Debug.Log($"REACHED MOUTH:{phrase.Phrase}");
-            PhraseRepository.CompletedPhrase(phrase);
-        });
+        // OnPhraseReachMouth.Subscribe((phrase) =>
+        // {
+        //     Debug.Log($"REACHED MOUTH:{phrase.Phrase}");
+        //     PhraseRepository.CompletedPhrase(phrase);
+        // });
     }
 
 

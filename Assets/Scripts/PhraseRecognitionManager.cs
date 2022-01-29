@@ -14,7 +14,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
     public ISubject<string> PartialValidPhrase = new Subject<string>();
     public ISubject<PhraseScriptable> WrongPhrase = new Subject<PhraseScriptable>();
 
-    private List<PhraseScriptable> _actualPhrases = new List<PhraseScriptable>();
+    public List<PhraseScriptable> actualPhrases = new List<PhraseScriptable>();
 
     public string partialPhrase;
 
@@ -26,16 +26,16 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
         var anyKeyObservable = Observable.EveryUpdate()
             .Where(_ => Input.anyKeyDown);
 
-        //KeyObservable = anyKeyObservable.SelectMany(_ => _keyCodes)
-        //    .Where(Input.GetKeyDown)
-        //    .Select(code => code.ToString());
+        KeyObservable = anyKeyObservable.SelectMany(_ => _keyCodes)
+            .Where(Input.GetKeyDown)
+            .Select(code => code.ToString());
 
-        var mytest = "ciao come stai ciaa ciao come stai".RemoveWhitespace();
+        // var mytest = "ciao come stai ciaa ciao come stai".RemoveWhitespace();
+        // 
+        // KeyObservable = Observable.Interval(TimeSpan.FromMilliseconds(250))
+        //     .Select((l, i) => i < mytest.Length ? mytest[i].ToString() : "9");
 
-        KeyObservable = Observable.Interval(TimeSpan.FromMilliseconds(250))
-            .Select((l, i) => i < mytest.Length ? mytest[i].ToString() : "9");
-
-        //KeyObservable.Subscribe((letter) => { Debug.Log(letter); });
+        // KeyObservable.Subscribe((letter) => { Debug.Log(letter); });
 
 
         // phrase recognition
@@ -47,7 +47,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
 
         KeyObservable.Subscribe((currentLetter) =>
         {
-            foreach (var phraseScriptable in _actualPhrases)
+            foreach (var phraseScriptable in actualPhrases)
             {
                 var phrase = phraseScriptable.Phrase.RemoveWhitespace().ToLower();
 

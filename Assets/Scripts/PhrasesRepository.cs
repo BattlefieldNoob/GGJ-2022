@@ -16,10 +16,10 @@ public class PhrasesRepository : MonoBehaviourWithGameManager
     {
         _inUseArray = Enumerable.Repeat(false, actualPhrases.Length).ToArray();
 
-        Observable.Interval(TimeSpan.FromMilliseconds(1000)).Subscribe((_) =>
-        {
-            gameManager.OnPhraseReachMouth.OnNext(GetPhrase());
-        });
+        // Observable.Interval(TimeSpan.FromMilliseconds(1000)).Subscribe((_) =>
+        // {
+        //     gameManager.OnPhraseReachMouth.OnNext(GetPhrase());
+        // });
     }
 
     public PhraseScriptable GetPhrase()
@@ -32,7 +32,9 @@ public class PhrasesRepository : MonoBehaviourWithGameManager
         var (_, chosenIndex) = notUsedPhrases.OrderBy(_ => rnd.Next()).First();
 
         _inUseArray[chosenIndex] = true;
-        return actualPhrases[chosenIndex];
+        PhraseScriptable phrase = actualPhrases[chosenIndex];
+        gameManager.PhraseRecognitionManager.actualPhrases.Add(phrase);
+        return phrase;
     }
 
 
@@ -42,6 +44,7 @@ public class PhrasesRepository : MonoBehaviourWithGameManager
         if (index == -1)
             return;
 
+        gameManager.PhraseRecognitionManager.actualPhrases.Remove(phraseScriptable);
         _inUseArray[index] = false;
     }
 }
