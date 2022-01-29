@@ -13,8 +13,13 @@ public class GameManager : MonoBehaviour
     private Image goodMetre;
     [SerializeField]
     private Image evilMetre;
+    [SerializeField]
+    private Animator playerAnimator;
+    [SerializeField]
+    private Animator bossAnimator;
 
     public float MentalSanity = 100;
+    private float currentMentalSanity = 0;
     public float MentalSanityLostMultiplier = 2;
 
     public float GoodLevel = 0;
@@ -89,8 +94,9 @@ public class GameManager : MonoBehaviour
     {
         if (!inGameplay) return;
 
-        MentalSanity -= Time.deltaTime * MentalSanityLostMultiplier;
-        if (MentalSanity <= 0)
+        currentMentalSanity += Time.deltaTime * MentalSanityLostMultiplier;
+        playerAnimator.SetFloat("sanity", currentMentalSanity/MentalSanity);
+        if (currentMentalSanity >= MentalSanity)
         {
             PlayerLose();
         }
