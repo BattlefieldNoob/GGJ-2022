@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.demigiant.dotween": "1.2.632",
+    "com.neuecc.unirx": "7.1.0",
     "com.unity.feature.2d": "1.0.0",
     "com.unity.ide.rider": "3.0.12",
     "com.unity.ide.visualstudio": "2.0.14",
@@ -9,6 +11,7 @@
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.7.0-pre.1",
     "com.unity.ugui": "1.0.0",
+    "com.unity.vectorgraphics": "2.0.0-preview.18",
     "com.unity.visualscripting": "1.7.6",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -40,9 +43,7 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.demigiant.dotween": "1.2.632",
-    "com.neuecc.unirx": "7.1.0"
+    "com.unity.modules.xr": "1.0.0"
   },
   "scopedRegistries": [
     {
