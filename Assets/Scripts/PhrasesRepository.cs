@@ -32,7 +32,9 @@ public class PhrasesRepository : MonoBehaviourWithGameManager
         var (_, chosenIndex) = notUsedPhrases.OrderBy(_ => rnd.Next()).First();
 
         _inUseArray[chosenIndex] = true;
-        return actualPhrases[chosenIndex];
+        PhraseScriptable phrase = actualPhrases[chosenIndex];
+        gameManager.PhraseRecognitionManager.actualPhrases.Add(phrase);
+        return phrase;
     }
 
 

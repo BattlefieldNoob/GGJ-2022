@@ -14,7 +14,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
     public ISubject<string> PartialValidPhrase = new Subject<string>();
     public ISubject<PhraseScriptable> WrongPhrase = new Subject<PhraseScriptable>();
 
-    private List<PhraseScriptable> _actualPhrases = new List<PhraseScriptable>();
+    public List<PhraseScriptable> actualPhrases = new List<PhraseScriptable>();
 
     public string partialPhrase;
 
@@ -47,7 +47,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
 
         KeyObservable.Subscribe((currentLetter) =>
         {
-            foreach (var phraseScriptable in _actualPhrases)
+            foreach (var phraseScriptable in actualPhrases)
             {
                 var phrase = phraseScriptable.Phrase.RemoveWhitespace().ToLower();
 
