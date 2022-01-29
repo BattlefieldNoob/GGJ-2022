@@ -22,6 +22,8 @@ public class EnemiesManager : MonoBehaviourWithGameManager
     private Transform exit;
     [SerializeField]
     private PhraseScriptable testPhrase;
+    
+    private IDisposable subscription;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +35,7 @@ public class EnemiesManager : MonoBehaviourWithGameManager
             RemoveEnemy(enemy);
             findedEnemy.Die();
         });
-        Observable.Interval(TimeSpan.FromSeconds(spawnTime)).Subscribe((_) => {
+        subscription = Observable.Interval(TimeSpan.FromSeconds(spawnTime)).Subscribe((_) => {
             Spawn();
         });
     }
@@ -48,6 +50,12 @@ public class EnemiesManager : MonoBehaviourWithGameManager
         // newEnemy.phrase = testPhrase;
         newEnemy.target = exit;
         enemies.Add(newEnemy);
+    }
+
+    public void Annichilation()
+    {
+        subscription.Dispose();
+        enemies.ForEach((enemy) => { enemy.Unspawn(); });
     }
 
     private void RemoveEnemy(EnemyAI enemy)

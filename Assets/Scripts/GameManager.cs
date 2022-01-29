@@ -1,16 +1,24 @@
 using System;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class GameManager : MonoBehaviour
 {
     public PhraseRecognitionManager PhraseRecognitionManager;
     public PhrasesRepository PhraseRepository;
+    public EnemiesManager EnemiesManager;
+    [SerializeField]
+    private Image goodMetre;
+    [SerializeField]
+    private Image evilMetre;
 
     public float MentalSanity = 100;
     public float MentalSanityLostMultiplier = 2;
 
-    public float GoodBadIndicator = 0;
+    public float GoodLevel = 0;
+    public float EvilLevel= 0;
     public int GoodBadThreshold = 10;
 
 
@@ -23,7 +31,17 @@ public class GameManager : MonoBehaviour
     {
         StartGameplay();
 
-        OnPhraseReachMouth.Subscribe((phrase) => { GoodBadIndicator += phrase.Multiplier * (phrase.IsGood ? 1 : -1); });
+        OnPhraseReachMouth.Subscribe((phrase) => {
+            if (phrase.IsGood)
+            {
+                GoodLevel += phrase.Multiplier * 1;
+                goodMetre.fillAmount = GoodLevel / GoodBadThreshold;
+            } else
+            {
+                EvilLevel += phrase.Multiplier * 1;
+                evilMetre.fillAmount = EvilLevel / GoodBadThreshold;
+            }
+        });
         // OnPhraseReachMouth.Subscribe((phrase) =>
         // {
         //     Debug.Log($"REACHED MOUTH:{phrase.Phrase}");
@@ -34,20 +52,32 @@ public class GameManager : MonoBehaviour
 
     public void StartGameplay()
     {
-        MentalSanity = 100;
-        GoodBadIndicator = 0;
+        goodMetre.fillAmount = 0;
+        evilMetre.fillAmount = 0;
+        MentalSanity = 100; 
+        GoodLevel = 0;
+        EvilLevel = 0;
         inGameplay = true;
     }
 
     public void PlayerLose()
     {
         Debug.Log("PLAYER LOSE!!!!!!!!!!!!");
+        EnemiesManager.Annichilation();
         inGameplay = false;
     }
 
     public void PlayerWin()
     {
         Debug.Log("PLAYER WIN!!!!!!!!!!!!");
+        if (GoodLevel >= GoodBadThreshold)
+        {
+            Debug.Log("GOOD ENDING !!!!!!!!!!!!");
+        } else if (EvilLevel >= GoodBadThreshold)
+        {
+            Debug.Log("BAD ENDING !!!!!!!!!!!!");
+        }
+        EnemiesManager.Annichilation();
         inGameplay = false;
     }
 
@@ -62,7 +92,7 @@ public class GameManager : MonoBehaviour
             PlayerLose();
         }
 
-        if (Math.Abs(GoodBadIndicator) >= GoodBadThreshold)
+        if (EvilLevel >= GoodBadThreshold || GoodLevel >= GoodBadThreshold)
         {
             PlayerWin();
         }
