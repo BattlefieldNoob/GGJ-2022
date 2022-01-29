@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bda751968bd324cb3189cf6958e1a3, type: 3}
   m_Name: Phrase17
   m_EditorClassIdentifier: 
-  Phrase: You light up the room
-  IsGood: 1
+  Phrase: U r awesome
+  IsGood: 0
   Multiplier: 1
