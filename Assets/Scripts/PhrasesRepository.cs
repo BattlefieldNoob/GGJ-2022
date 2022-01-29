@@ -44,6 +44,7 @@ public class PhrasesRepository : MonoBehaviourWithGameManager
         if (index == -1)
             return;
 
+        gameManager.PhraseRecognitionManager.actualPhrases.Remove(phraseScriptable);
         _inUseArray[index] = false;
     }
 }
