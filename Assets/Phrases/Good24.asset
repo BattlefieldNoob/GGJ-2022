@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Good24
   m_EditorClassIdentifier: 
   Phrase: better
-  IsGood: 0
+  IsGood: 1
   Multiplier: 1

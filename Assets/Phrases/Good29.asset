@@ -15,5 +15,5 @@ MonoBehaviour:
   Phrase: 'complete
 
 '
-  IsGood: 0
+  IsGood: 1
   Multiplier: 1

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Good22
   m_EditorClassIdentifier: 
   Phrase: good
-  IsGood: 0
+  IsGood: 1
   Multiplier: 1
