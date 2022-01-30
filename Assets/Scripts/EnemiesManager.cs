@@ -71,7 +71,10 @@ public class EnemiesManager : MonoBehaviourWithGameManager
     public void Annichilation()
     {
         subscription.Dispose();
-        enemies.ForEach((enemy) => { enemy.Unspawn(); });
+        enemies.ForEach((enemy) =>
+        {
+            StartCoroutine(enemy.Unspawn());
+        });
     }
 
     private void RemoveEnemy(EnemyAI enemy)
@@ -84,6 +87,6 @@ public class EnemiesManager : MonoBehaviourWithGameManager
     {
         gameManager.OnPhraseReachMouth.OnNext(enemy.phrase);
         RemoveEnemy(enemy);
-        enemy.Unspawn();
+        StartCoroutine(enemy.Unspawn());
     }
 }

@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
-using UnityEditor.Animations;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -19,11 +17,14 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     private EnemiesManager manager;
 
+    [SerializeField] private AudioClip poppingClip;
+
+    private AudioSource _audioSource;
     // Start is called before the first frame update
     void Start()
     {
         text.text = phrase.Phrase;
-        
+        _audioSource = GetComponentInChildren<AudioSource>();
     }
 
     // Update is called once per frame
@@ -41,12 +42,14 @@ public class EnemyAI : MonoBehaviour
     public void Die()
     {
         killed = true;
+        _audioSource.PlayOneShot(poppingClip);
         // animate;
-        Unspawn();
+        StartCoroutine(Unspawn());
     }
 
-    public void Unspawn()
+    public IEnumerator Unspawn()
     {
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
     }
 }
