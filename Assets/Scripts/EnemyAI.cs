@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using UnityEditor.Animations;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -17,10 +18,12 @@ public class EnemyAI : MonoBehaviour
     public TMP_Text text;
     [SerializeField]
     private EnemiesManager manager;
+
     // Start is called before the first frame update
     void Start()
     {
         text.text = phrase.Phrase;
+        
     }
 
     // Update is called once per frame

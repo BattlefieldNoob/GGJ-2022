@@ -10,6 +10,7 @@ public class TriggerOfTheDead : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         EnemyAI enemy = other.GetComponent<EnemyAI>();
-        manager.Complete(enemy);
+        if(enemy!= null)
+            manager.Complete(enemy);
     }
 }
