@@ -18,6 +18,7 @@ public class EnemyAI : MonoBehaviour
     private EnemiesManager manager;
 
     [SerializeField] private AudioClip poppingClip;
+    [SerializeField] private AudioClip voice;
 
     private AudioSource _audioSource;
     // Start is called before the first frame update
@@ -25,6 +26,10 @@ public class EnemyAI : MonoBehaviour
     {
         text.text = phrase.Phrase;
         _audioSource = GetComponentInChildren<AudioSource>();
+        _audioSource.clip = voice;
+        _audioSource.loop = true;
+        _audioSource.pitch = Random.Range(-3, 1.5f);
+        _audioSource.Play();
     }
 
     // Update is called once per frame

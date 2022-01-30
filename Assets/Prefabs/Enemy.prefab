@@ -195,6 +195,7 @@ MonoBehaviour:
   text: {fileID: 5228380936119390508}
   manager: {fileID: 0}
   poppingClip: {fileID: 8300000, guid: 48f3ef4f0554ae946bb61cfa01d4e71b, type: 3}
+  voice: {fileID: 8300000, guid: da794a2bfd79fa846be78bd9842f799e, type: 3}
 --- !u!1 &3545472916637640408
 GameObject:
   m_ObjectHideFlags: 0
