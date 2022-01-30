@@ -23,9 +23,11 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private AudioClip voice;
 
     private AudioSource _audioSource;
+    private Animator _animator;
     // Start is called before the first frame update
     void Start()
     {
+        _animator = GetComponentInChildren<Animator>();
         text.text = phrase.Phrase;
         text.color = textColor;
         _audioSource = GetComponentInChildren<AudioSource>();
@@ -51,13 +53,13 @@ public class EnemyAI : MonoBehaviour
     {
         killed = true;
         _audioSource.PlayOneShot(poppingClip);
-        // animate;
+        _animator.SetTrigger("death");
         StartCoroutine(Unspawn());
     }
 
     public IEnumerator Unspawn()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
         Destroy(gameObject);
     }
 }
