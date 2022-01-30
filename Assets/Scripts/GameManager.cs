@@ -53,6 +53,21 @@ public class GameManager : MonoBehaviour
                 evilMetre.fillAmount = EvilLevel / GoodBadThreshold;
             }
         });
+
+        PhraseRecognitionManager.ValidPhrase.Subscribe((phrase) =>
+        {
+            //points are inverted
+            if (phrase.IsGood)
+            {
+                EvilLevel += phrase.Multiplier * 1;
+                evilMetre.fillAmount = EvilLevel / GoodBadThreshold;
+            }
+            else
+            {
+                GoodLevel += phrase.Multiplier * 1;
+                goodMetre.fillAmount = GoodLevel / GoodBadThreshold;
+            }
+        });
         // OnPhraseReachMouth.Subscribe((phrase) =>
         // {
         //     Debug.Log($"REACHED MOUTH:{phrase.Phrase}");
