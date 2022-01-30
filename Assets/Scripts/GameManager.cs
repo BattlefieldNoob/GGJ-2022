@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayableAsset goodEndingScene;
     [SerializeField] private PlayableAsset gameOverScene;
     [SerializeField] private PlayableDirector cutesceneDirerctor;
+    
+    [SerializeField] private AudioSource vfxSource;
+    [SerializeField] private AudioClip wrongPhraseClip;
 
     public float MentalSanity = 100;
     private float currentMentalSanity = 0;
@@ -67,6 +70,11 @@ public class GameManager : MonoBehaviour
                 GoodLevel += phrase.Multiplier * 1;
                 goodMetre.fillAmount = GoodLevel / GoodBadThreshold;
             }
+        });
+
+        PhraseRecognitionManager.WrongPhrase.Subscribe((_) =>
+        {
+            vfxSource.PlayOneShot(wrongPhraseClip);
         });
         // OnPhraseReachMouth.Subscribe((phrase) =>
         // {
@@ -118,7 +126,7 @@ public class GameManager : MonoBehaviour
     {
         var duration = cutscene.duration;
         cutesceneDirerctor.Play(cutscene);
-        yield return new WaitForSeconds((float)duration + endingDelay);
+        yield return new WaitForSeconds((float)duration - endingDelay);
         GoToMainMenu();
     }
 

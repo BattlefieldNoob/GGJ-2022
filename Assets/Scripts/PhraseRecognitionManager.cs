@@ -65,6 +65,10 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
                 ValidPhrase.OnNext(phrase);
                 actualPhrases.Remove(phrase);
             }
+            else
+            {
+                WrongPhrase.OnNext(null);
+            }
 
             //if (partialPhrase.Length != 0)
             //{
@@ -136,7 +140,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
                         if (_valid.Contains(phraseScriptable))
                         {
                             _valid.Remove(phraseScriptable);
-                            WrongPhrase.OnNext(phraseScriptable);
+                            //WrongPhrase.OnNext(phraseScriptable);
                             blocked.Add(phraseScriptable);
                         }
                     }
@@ -158,7 +162,7 @@ public class PhraseRecognitionManager : MonoBehaviourWithGameManager
         });
 
         ValidPhrase.Subscribe((valid) => { Debug.Log($"VALID:{valid.Phrase}"); });
-        WrongPhrase.Subscribe((wrong) => { Debug.Log($"NOT POSSIBLE:{wrong.Phrase}"); });
+        //WrongPhrase.Subscribe((wrong) => { Debug.Log($"NOT POSSIBLE:{wrong.Phrase}"); });
         PartialValidPhrase.Subscribe((s) => { Debug.Log($"Partial:{s}"); });
     }
 
