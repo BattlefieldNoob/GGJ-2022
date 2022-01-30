@@ -2,6 +2,7 @@ using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Playables;
 
 
 public class GameManager : MonoBehaviour
@@ -17,6 +18,15 @@ public class GameManager : MonoBehaviour
     private Animator playerAnimator;
     [SerializeField]
     private Animator bossAnimator;
+
+    [SerializeField]
+    private PlayableAsset badEndingScene;
+    [SerializeField]
+    private PlayableAsset goodEndingScene;
+    [SerializeField]
+    private PlayableAsset gameOverScene;
+    [SerializeField]
+    private PlayableDirector cutesceneDirerctor;
 
     public float MentalSanity = 100;
     private float currentMentalSanity = 0;
@@ -88,7 +98,6 @@ public class GameManager : MonoBehaviour
         EnemiesManager.Annichilation();
         
     }
-
 
     private void Update()
     {
