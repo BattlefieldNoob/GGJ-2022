@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,30 +11,22 @@ public class GameManager : MonoBehaviour
     public PhraseRecognitionManager PhraseRecognitionManager;
     public PhrasesRepository PhraseRepository;
     public EnemiesManager EnemiesManager;
-    [SerializeField]
-    private Image goodMetre;
-    [SerializeField]
-    private Image evilMetre;
-    [SerializeField]
-    private Animator playerAnimator;
-    [SerializeField]
-    private Animator bossAnimator;
+    [SerializeField] private Image goodMetre;
+    [SerializeField] private Image evilMetre;
+    [SerializeField] private Animator playerAnimator;
+    [SerializeField] private Animator bossAnimator;
 
-    [SerializeField]
-    private PlayableAsset badEndingScene;
-    [SerializeField]
-    private PlayableAsset goodEndingScene;
-    [SerializeField]
-    private PlayableAsset gameOverScene;
-    [SerializeField]
-    private PlayableDirector cutesceneDirerctor;
+    [SerializeField] private PlayableAsset badEndingScene;
+    [SerializeField] private PlayableAsset goodEndingScene;
+    [SerializeField] private PlayableAsset gameOverScene;
+    [SerializeField] private PlayableDirector cutesceneDirerctor;
 
     public float MentalSanity = 100;
     private float currentMentalSanity = 0;
     public float MentalSanityLostMultiplier = 2;
 
     public float GoodLevel = 0;
-    public float EvilLevel= 0;
+    public float EvilLevel = 0;
     public int GoodBadThreshold = 10;
 
 
@@ -41,17 +34,20 @@ public class GameManager : MonoBehaviour
 
 
     public readonly ISubject<PhraseScriptable> OnPhraseReachMouth = new Subject<PhraseScriptable>();
+    [SerializeField] private float endingDelay;
 
     private void Start()
     {
         StartGameplay();
 
-        OnPhraseReachMouth.Subscribe((phrase) => {
+        OnPhraseReachMouth.Subscribe((phrase) =>
+        {
             if (phrase.IsGood)
             {
                 GoodLevel += phrase.Multiplier * 1;
                 goodMetre.fillAmount = GoodLevel / GoodBadThreshold;
-            } else
+            }
+            else
             {
                 EvilLevel += phrase.Multiplier * 1;
                 evilMetre.fillAmount = EvilLevel / GoodBadThreshold;
@@ -69,7 +65,7 @@ public class GameManager : MonoBehaviour
     {
         goodMetre.fillAmount = 0;
         evilMetre.fillAmount = 0;
-        MentalSanity = 100; 
+        MentalSanity = 100;
         GoodLevel = 0;
         EvilLevel = 0;
         inGameplay = true;
@@ -79,6 +75,7 @@ public class GameManager : MonoBehaviour
     {
         inGameplay = false;
         Debug.Log("PLAYER LOSE!!!!!!!!!!!!");
+        StartCoroutine(PlayCutsceneAndEndGameplay(gameOverScene));
         PhraseRecognitionManager.StopListen();
         EnemiesManager.Annichilation();
     }
@@ -90,13 +87,29 @@ public class GameManager : MonoBehaviour
         if (GoodLevel >= GoodBadThreshold)
         {
             Debug.Log("GOOD ENDING !!!!!!!!!!!!");
-        } else if (EvilLevel >= GoodBadThreshold)
+            StartCoroutine(PlayCutsceneAndEndGameplay(goodEndingScene));
+        }
+        else if (EvilLevel >= GoodBadThreshold)
         {
+            StartCoroutine(PlayCutsceneAndEndGameplay(badEndingScene));
             Debug.Log("BAD ENDING !!!!!!!!!!!!");
         }
+
         PhraseRecognitionManager.StopListen();
         EnemiesManager.Annichilation();
-        
+    }
+
+    private IEnumerator PlayCutsceneAndEndGameplay(PlayableAsset cutscene)
+    {
+        var duration = cutscene.duration;
+        cutesceneDirerctor.Play(cutscene);
+        yield return new WaitForSeconds((float)duration + endingDelay);
+        GoToMainMenu();
+    }
+
+    private void GoToMainMenu()
+    {
+        ChangeSceneAndFadeManager.Instance.DoChangeScene("MainMenu");
     }
 
     private void Update()
@@ -104,7 +117,7 @@ public class GameManager : MonoBehaviour
         if (!inGameplay) return;
 
         currentMentalSanity += Time.deltaTime * MentalSanityLostMultiplier;
-        playerAnimator.SetFloat("sanity", currentMentalSanity/MentalSanity);
+        playerAnimator.SetFloat("sanity", currentMentalSanity / MentalSanity);
         if (currentMentalSanity >= MentalSanity)
         {
             PlayerLose();
