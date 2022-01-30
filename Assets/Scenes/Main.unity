@@ -1896,7 +1896,7 @@ MonoBehaviour:
   vfxSource: {fileID: 701317781}
   wrongPhraseClip: {fileID: 8300000, guid: da938a7ffb4f8774e80f06931df0745b, type: 3}
   MentalSanity: 100
-  MentalSanityLostMultiplier: 2.3
+  MentalSanityLostMultiplier: 2.1
   GoodLevel: 0
   EvilLevel: 0
   GoodBadThreshold: 10
