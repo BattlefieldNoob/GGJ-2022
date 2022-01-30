@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bda751968bd324cb3189cf6958e1a3, type: 3}
   m_Name: Good5
   m_EditorClassIdentifier: 
-  Phrase: U r special
+  Phrase: u r right
   IsGood: 1
   Multiplier: 1
