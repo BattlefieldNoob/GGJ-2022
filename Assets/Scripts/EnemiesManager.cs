@@ -17,6 +17,8 @@ public class EnemiesManager : MonoBehaviourWithGameManager
     [SerializeField] private float range = 5;
     [SerializeField] private Transform exit;
     [SerializeField] private PhraseScriptable testPhrase;
+    [SerializeField] private Color devilColor;
+    [SerializeField] private Color angelColor;
 
     [SerializeField] private RuntimeAnimatorController[] Devil;
 
@@ -54,6 +56,7 @@ public class EnemiesManager : MonoBehaviourWithGameManager
     {
         newEnemy.phrase = gameManager.PhraseRepository.GetPhrase();
         // newEnemy.phrase = testPhrase;
+        newEnemy.textColor = newEnemy.phrase.IsGood ? angelColor : devilColor;
         newEnemy.target = exit;
         var enemyAnimator = newEnemy.GetComponentInChildren<Animator>();
 

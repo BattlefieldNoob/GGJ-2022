@@ -15,6 +15,8 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     public TMP_Text text;
     [SerializeField]
+    public Color textColor;
+    [SerializeField]
     private EnemiesManager manager;
 
     [SerializeField] private AudioClip poppingClip;
@@ -25,6 +27,7 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         text.text = phrase.Phrase;
+        text.color = textColor;
         _audioSource = GetComponentInChildren<AudioSource>();
         _audioSource.clip = voice;
         _audioSource.loop = true;
