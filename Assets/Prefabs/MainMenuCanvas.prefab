@@ -348,7 +348,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Write the throughs with your keyboard to destroy them and let pass the
+  m_text: "Write the thoughs with your keyboard to destroy them and let pass the
     one you want! \n\nWrite quickly, you are losing mental sanity! Fight the duality
     inside of you!\r\n\r"
   m_isRightToLeft: 0

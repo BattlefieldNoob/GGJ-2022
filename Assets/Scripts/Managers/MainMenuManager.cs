@@ -18,8 +18,8 @@ namespace Managers
         [SerializeField] private CanvasGroup menuCanvasGroup;
         [SerializeField] private CanvasGroup howToCanvasGroup;
 
-        [SerializeField] private Image VolumeOnIcon;
-        [SerializeField] private Image VolumeMuteIcon;
+        //[SerializeField] private Image VolumeOnIcon;
+        //[SerializeField] private Image VolumeMuteIcon;
 
 
         [SerializeField] private float fadeTime = .5f;
@@ -57,8 +57,8 @@ namespace Managers
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
-            VolumeMuteIcon.enabled = !_fmodEnabled;
-            VolumeOnIcon.enabled = _fmodEnabled;
+            //VolumeMuteIcon.enabled = !_fmodEnabled;
+            //VolumeOnIcon.enabled = _fmodEnabled;
         }
 
         bool _fmodEnabled = true;
